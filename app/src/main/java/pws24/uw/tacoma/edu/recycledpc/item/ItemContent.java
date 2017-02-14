@@ -18,11 +18,10 @@ public class ItemContent implements Serializable {
     private String mlongDescription;
     private String mprereqs;
 
-    public static final String TITLE = "title", SHORT_DESC = "shortDesc"
-            , LONG_DESC = "longDesc", PRE_REQS = "prereqs";
+    public static final String TITLE = "title", SHORT_DESC = "price"
+            , LONG_DESC = "longDesc", PRE_REQS = "imagePath";
 
-    public ItemContent(String id, String sd, String ld, String pr) {
-        mprereqs = pr;
+    public ItemContent(String id, String sd, String ld) {
         mlongDescription = ld;
         mshortDescription = sd;
         mcourseId = id;
@@ -43,7 +42,7 @@ public class ItemContent implements Serializable {
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
                     ItemContent course = new ItemContent(obj.getString(ItemContent.TITLE), obj.getString(ItemContent.SHORT_DESC)
-                            , obj.getString(ItemContent.LONG_DESC), obj.getString(ItemContent.PRE_REQS));
+                            , obj.getString(ItemContent.LONG_DESC));
                     courseList.add(course);
                 }
             } catch (JSONException e) {

@@ -38,7 +38,7 @@ public class ItemFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
-    private static final String COURSE_URL = "http://cssgate.insttech.washington.edu/~pws24/PClist.php?cmd=items";
+    private static final String COURSE_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/PClist2.php?cmd=items";
     private RecyclerView mRecyclerView;
 
     /**

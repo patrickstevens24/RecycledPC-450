@@ -200,11 +200,15 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.new_item) {
+            ItemAddFragment courseAddFragment = new ItemAddFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, courseAddFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (id == R.id.my_offers) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.my_items) {
 
         } else if (id == R.id.nav_manage) {
 
