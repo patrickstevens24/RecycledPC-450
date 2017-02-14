@@ -5,7 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="60dp"
+    android:paddingTop="65dp"
+    android:paddingLeft="40dp"
+    android:paddingRight="10dp"
     tools:context="pws24.uw.tacoma.edu.recycledpc.HomeActivity">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add"/>
 
 </FrameLayout>

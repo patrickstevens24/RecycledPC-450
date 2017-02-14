@@ -1,7 +1,9 @@
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,9 +11,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
-import pws24.uw.tacoma.edu.recycledpc.item.ItemContent.DummyItem;
+
+
 
 /**
  * A fragment representing a list of Items.
@@ -26,6 +38,8 @@ public class ItemFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
+    private static final String COURSE_URL = "http://cssgate.insttech.washington.edu/~pws24/PClist.php?cmd=items";
+    private RecyclerView mRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,6 +66,62 @@ public class ItemFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
+    private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to download the list of courses, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            if (result.startsWith("Unable to")) {
+                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            List<ItemContent> courseList = new ArrayList<ItemContent>();
+            result = ItemContent.parseCourseJSON(result, courseList);
+            // Something wrong with the JSON returned.
+            if (result != null) {
+                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            // Everything is good, show the list of courses.
+            if (!courseList.isEmpty()) {
+                mRecyclerView.setAdapter(new MyItemRecyclerViewAdapter(courseList, mListener));
+            }
+        }
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,16 +131,23 @@ public class ItemFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            mRecyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(ItemContent.ITEMS, mListener));
+            DownloadCoursesTask task = new DownloadCoursesTask();
+            task.execute(new String[]{COURSE_URL});
         }
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.show();
+
+
         return view;
     }
+
 
 
     @Override
@@ -101,7 +178,8 @@ public class ItemFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(ItemContent item);
     }
+
+
 }

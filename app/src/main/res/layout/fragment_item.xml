@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:orientation="vertical"
     android:weightSum="1"
-    android:layout_width="match_parent"
-    app:layout_collapseParallaxMultiplier="1.0">
+    android:layout_height="200dp">
 
     <ImageView
-        android:id="@+id/image1"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:textAlignment="center" />
-
+        android:layout_height="76dp"
+        app:srcCompat="@drawable/computer"
+        android:id="@+id/imageView2" />
 
     <TextView
-            android:id="@+id/id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textAlignment="center" />
+    android:id="@+id/id"
+    android:layout_width="match_parent"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:clickable="false"
+        android:layout_height="46dp" />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:layout_height="51dp"
-        android:textAlignment="center" />
-
+        android:layout_width="114dp"
+        android:layout_height="match_parent"
+        android:textAppearance="?attr/textAppearanceListItem" />
 
 </LinearLayout>
