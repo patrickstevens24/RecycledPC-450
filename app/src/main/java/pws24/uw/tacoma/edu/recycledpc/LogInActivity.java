@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Intent;
@@ -19,10 +25,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/**
+ *The login activity is the login screen.
+ *It has a button that inflates the register fragment.
+ *
+ * @author Arthur Panlilio
+ */
 public class LogInActivity extends AppCompatActivity implements RegisterFragment.RegisterListener{
 
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
+    // LOGIN_URL connects to the php file.
     public static final String LOGIN_URL = "http://cssgate.insttech.washington.edu/~apanlili/login.php?";
     private EditText etEmail;
     private EditText etPassword;
@@ -38,17 +51,32 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
 
     }
 
+    /**
+     * Checks the login information
+     *
+     * @param arg0
+     */
     public void checkLogin(View arg0) {
 
         String url = buildLogInURL();
         new AsyncLogin().execute(url);
     }
 
+    /**
+     * inserts the email.
+     *
+     * @param email
+     */
     public void insertEmail(String email){
         EditText myTextBox = (EditText) findViewById(R.id.email);
         myTextBox.setText(email);
     }
 
+    /**
+     * Checks if the register button was pressed.
+     *
+     * @param arg0
+     */
     public void checkRegister(View arg0) {
         RegisterFragment registerFragment = new RegisterFragment();
         getSupportFragmentManager().beginTransaction()
@@ -57,6 +85,11 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
                 .commit();
     }
 
+    /**
+     * builds the url command
+     *
+     * @return the url command for the php file to login
+     */
     private String buildLogInURL(){
         StringBuilder sb = new StringBuilder(LOGIN_URL);
         try{
@@ -74,6 +107,10 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
         return sb.toString();
     }
 
+    /**
+     * Connects online to login the user
+     *
+     */
     private class AsyncLogin extends AsyncTask<String, String, String>{
 
         @Override

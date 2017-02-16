@@ -1,12 +1,16 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,13 +36,14 @@ import java.net.URLEncoder;
  * to handle interaction events.
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * This fragment enables the user to register an account
+ *
+ * @author Arthur Panlilio
  */
 public class RegisterFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
+    //URL that leads to the register php file.
     public static final String REGISTER_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/register.php?";
+    //These variables are to be compared to see if the information matches
     private EditText etEmail;
     private EditText etEmailConfirm;
     private EditText etPassword;
@@ -58,7 +63,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      *
      * @return A new instance of fragment RegisterFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
@@ -86,10 +90,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         Button b = (Button) v.findViewById(R.id.register_account);
         b.setOnClickListener(this);
         return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
     }
 
 
@@ -121,11 +121,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
-
+    /**
+     * Checks if the username and passwords match the confirmation information.
+     *
+     * @param arg0
+     */
     public void onClick(View arg0) {
 
         if (!(etEmail.getText().toString().equals(etEmailConfirm.getText().toString()))) {
@@ -134,13 +137,18 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         else if(!(etPassword.getText().toString().equals(etPasswordConfirm.getText().toString()))) {
             Toast.makeText(getActivity(),"Passwords do not match",Toast.LENGTH_SHORT).show();
         } else {
-            Log.d("WOW", "WHOHOAHOHAO");
-            String url = buildRegisterURL();
+            String url = buildRegisterURL(arg0);
             new RegisterFragment.AsyncRegister().execute(url);
         }
     }
 
-    private String buildRegisterURL(){
+    /**
+     * Creates a url command for the php to register
+     *
+     * @param v is the view
+     * @return the url for the command.
+     */
+    private String buildRegisterURL(View v){
         StringBuilder sb = new StringBuilder(REGISTER_URL);
         try{
             String email = etEmail.getText().toString();
@@ -151,12 +159,18 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             sb.append("&password=");
             sb.append(URLEncoder.encode(password, "UTF-8"));
         } catch(Exception e) {
-
+            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
         }
 
         return sb.toString();
     }
 
+    /**
+     * Gets the url string and executes the php files
+     * to upload the register information to the database.
+     *
+     */
     private class AsyncRegister extends AsyncTask<String, String, String> {
 
         @Override
@@ -194,7 +208,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onPostExecute(String result) {
             try {
-                JSONObject jsonObject = new JSONObject(result);//Why isnt this string converting into json object?
+                JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
                     Toast.makeText(getContext(), "Account Registration Successful"

@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Context;
@@ -31,34 +37,40 @@ import static pws24.uw.tacoma.edu.recycledpc.R.id.imageView;
  * Activities that contain this fragment must implement the
  * {@l factory method to
  * create an instance of this fragment.
+ *
+ * @author Patrick Stevens
+ * @author Arthur Panlilio
  */
 public class ItemAddFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
+    //Image request number
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private EditText mCourseIdEditText;
     private EditText mCourseShortDescEditText;
     private EditText mCourseLongDescEditText;
-    private EditText mCoursePrereqsEditText;
+
 
     private Bitmap bitmap;
 
     private ImageView imageView;
 
+    private ItemAddListener mListener;
 
     private final static String COURSE_ADD_URL
             = "http://cssgate.insttech.washington.edu/~_450bteam10/addItem2.php?";
 
-    // TODO: Rename and change types of parameters
 
-
+    /**
+     * empty constructor
+     */
     public ItemAddFragment() {
         // Required empty public constructor
     }
-    private ItemAddListener mListener;
 
+    /**
+     * listener
+     */
     public interface ItemAddListener {
         public void addCourse(String url, Bitmap bitmap);
     }
@@ -67,11 +79,8 @@ public class ItemAddFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CourseAddFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ItemAddFragment newInstance(String param1, String param2) {
         ItemAddFragment fragment = new ItemAddFragment();
         Bundle args = new Bundle();
@@ -80,6 +89,12 @@ public class ItemAddFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Builds the url to connect to the php to add an item
+     *
+     * @param v is the view
+     * @return the url to connec to the php file
+     */
     private String buildCourseURL(View v) {
 
         StringBuilder sb = new StringBuilder(COURSE_ADD_URL);
@@ -147,7 +162,11 @@ public class ItemAddFragment extends Fragment {
         return v;
     }
 
-
+    /**
+     * Activates the file chooser function.
+     * Allows the user to upload a picture from their phone
+     *
+     */
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -205,7 +224,6 @@ public class ItemAddFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

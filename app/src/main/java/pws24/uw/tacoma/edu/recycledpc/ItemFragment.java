@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Context;
@@ -27,19 +33,19 @@ import java.util.List;
 
 import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 
-
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
+ *
+ * @author Patrick Stevens
  */
 public class ItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
     private static final String COURSE_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/PClist2.php?cmd=items";
@@ -54,7 +60,7 @@ public class ItemFragment extends Fragment {
     public ItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
+
     @SuppressWarnings("unused")
     public static ItemFragment newInstance(int columnCount) {
         ItemFragment fragment = new ItemFragment();
@@ -74,8 +80,10 @@ public class ItemFragment extends Fragment {
     }
 
 
-
-
+    /**
+     * Downloads the item information from the database so that it can be displayed in a list.
+     *
+     */
     private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
 
         @Override

@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.graphics.Bitmap;
@@ -25,14 +31,14 @@ import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
  * to handle interaction events.
  * Use the {@link } factory method to
  * create an instance of this fragment.
+ *
+ * @author Patrick Stevens
+ * @author Arthur Panlilio
  */
 public class ItemDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -41,7 +47,6 @@ public class ItemDetailFragment extends Fragment {
     private TextView mCourseIdTextView;
     private TextView mCourseShortDescTextView;
     private TextView mCourseLongDescTextView;
-    private TextView mCoursePrereqsTextView;
 
     private ImageView mItemImageView;
 
@@ -49,6 +54,9 @@ public class ItemDetailFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     public final static String COURSE_ITEM_SELECTED = "course_selected";
 
+    /**
+     * empty constructor
+     */
     public ItemDetailFragment() {
         // Required empty public constructor
     }
@@ -79,6 +87,11 @@ public class ItemDetailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Gets the data online to update the information.
+     *
+     * @param item is the item to get information from.
+     */
     public void updateView(ItemContent item) {
         if (item != null) {
             mCourseIdTextView.setText(item.getId());
@@ -127,10 +140,13 @@ public class ItemDetailFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(ItemContent item);
     }
 
+    /**
+     * This task connects online so the item detail can download the picture of that item online.
+     *
+     */
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
