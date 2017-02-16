@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -16,15 +17,17 @@ public class ItemContent implements Serializable {
     private String mcourseId;
     private String mshortDescription;
     private String mlongDescription;
-    private String mprereqs;
+    private String mPath;
+
 
     public static final String TITLE = "title", SHORT_DESC = "price"
-            , LONG_DESC = "longDesc", PRE_REQS = "imagePath";
+            , LONG_DESC = "longDesc", IMAGE_PATH = "imagePath";
 
-    public ItemContent(String id, String sd, String ld) {
+    public ItemContent(String id, String sd, String ld, String path) {
         mlongDescription = ld;
         mshortDescription = sd;
         mcourseId = id;
+        mPath = path;
     }
 
     /**
@@ -42,7 +45,7 @@ public class ItemContent implements Serializable {
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
                     ItemContent course = new ItemContent(obj.getString(ItemContent.TITLE), obj.getString(ItemContent.SHORT_DESC)
-                            , obj.getString(ItemContent.LONG_DESC));
+                            , obj.getString(ItemContent.LONG_DESC), obj.getString(ItemContent.IMAGE_PATH));
                     courseList.add(course);
                 }
             } catch (JSONException e) {
@@ -74,7 +77,8 @@ public class ItemContent implements Serializable {
         return mlongDescription;
     }
 
-    public String getPrereqs() {
-        return mprereqs;
+    public String getPath() {
+        return mPath;
     }
+
 }

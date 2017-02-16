@@ -1,6 +1,8 @@
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -41,6 +45,8 @@ public class ItemFragment extends Fragment {
     private static final String COURSE_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/PClist2.php?cmd=items";
     private RecyclerView mRecyclerView;
 
+
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -66,6 +72,10 @@ public class ItemFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
+
+
+
+
     private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -123,6 +133,11 @@ public class ItemFragment extends Fragment {
 
 
 
+
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -140,6 +155,7 @@ public class ItemFragment extends Fragment {
             DownloadCoursesTask task = new DownloadCoursesTask();
             task.execute(new String[]{COURSE_URL});
         }
+
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();

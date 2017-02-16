@@ -1,19 +1,29 @@
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.net.URLEncoder;
+
+
+import static android.app.Activity.RESULT_OK;
+import static pws24.uw.tacoma.edu.recycledpc.R.id.imageView;
 
 
 /**
@@ -25,10 +35,18 @@ import java.net.URLEncoder;
 public class ItemAddFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    private static final int PICK_IMAGE_REQUEST = 1;
+
     private EditText mCourseIdEditText;
     private EditText mCourseShortDescEditText;
     private EditText mCourseLongDescEditText;
     private EditText mCoursePrereqsEditText;
+
+    private Bitmap bitmap;
+
+    private ImageView imageView;
+
 
     private final static String COURSE_ADD_URL
             = "http://cssgate.insttech.washington.edu/~_450bteam10/addItem2.php?";
@@ -42,7 +60,7 @@ public class ItemAddFragment extends Fragment {
     private ItemAddListener mListener;
 
     public interface ItemAddListener {
-        public void addCourse(String url);
+        public void addCourse(String url, Bitmap bitmap);
     }
 
     /**
@@ -83,8 +101,6 @@ public class ItemAddFragment extends Fragment {
             sb.append(URLEncoder.encode(courseLongDesc, "UTF-8"));
 
 
-            Log.i("CourseAddFragment", sb.toString());
-
         }
         catch(Exception e) {
             Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
@@ -105,7 +121,7 @@ public class ItemAddFragment extends Fragment {
         mCourseIdEditText = (EditText) v.findViewById(R.id.add_course_id);
         mCourseShortDescEditText = (EditText) v.findViewById(R.id.add_course_short_desc);
         mCourseLongDescEditText = (EditText) v.findViewById(R.id.add_course_long_desc);
-
+        imageView = (ImageView)v.findViewById(R.id.upload_preview);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
@@ -116,13 +132,44 @@ public class ItemAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String url = buildCourseURL(v);
-                mListener.addCourse(url);
+                mListener.addCourse(url, bitmap);
+            }
+        });
+
+        Button uploadButton = (Button) v.findViewById(R.id.upload_button);
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
             }
         });
 
         return v;
     }
 
+
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Context applicationContext = HomeActivity.getContextOfApplication();
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), filePath);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
 
     @Override

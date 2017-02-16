@@ -1,11 +1,19 @@
 package pws24.uw.tacoma.edu.recycledpc;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.InputStream;
+import java.net.URL;
 
 import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 
@@ -35,6 +43,8 @@ public class ItemDetailFragment extends Fragment {
     private TextView mCourseLongDescTextView;
     private TextView mCoursePrereqsTextView;
 
+    private ImageView mItemImageView;
+
 
     private OnListFragmentInteractionListener mListener;
     public final static String COURSE_ITEM_SELECTED = "course_selected";
@@ -62,19 +72,20 @@ public class ItemDetailFragment extends Fragment {
         mCourseIdTextView = (TextView) view.findViewById(R.id.course_item_id);
         mCourseShortDescTextView = (TextView) view.findViewById(R.id.course_short_desc);
         mCourseLongDescTextView = (TextView) view.findViewById(R.id.course_long_desc);
-        mCoursePrereqsTextView = (TextView) view.findViewById(R.id.course_prereqs);
+        mItemImageView = (ImageView) view.findViewById(R.id.imageView3);
 
 
 
         return view;
     }
 
-    public void updateView(ItemContent course) {
-        if (course != null) {
-            mCourseIdTextView.setText(course.getId());
-            mCourseShortDescTextView.setText(course.getShortDesc());
-            mCourseLongDescTextView.setText(course.getLongDesc());
-            mCoursePrereqsTextView.setText(course.getPrereqs());
+    public void updateView(ItemContent item) {
+        if (item != null) {
+            mCourseIdTextView.setText(item.getId());
+            mCourseShortDescTextView.setText(item.getShortDesc());
+            mCourseLongDescTextView.setText(item.getLongDesc());
+            String imagePath = item.getPath();
+            new DownloadImageTask(mItemImageView).execute(imagePath);
         }
     }
 
@@ -119,4 +130,30 @@ public class ItemDetailFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(ItemContent item);
     }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
 }
