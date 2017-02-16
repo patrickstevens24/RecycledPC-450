@@ -1,5 +1,8 @@
 package pws24.uw.tacoma.edu.recycledpc;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,19 +11,32 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Hashtable;
+import java.util.Map;
 
 import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 
@@ -29,10 +45,18 @@ import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ItemAddFragment.ItemAddListener{
 
+    private String UPLOAD_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/upload3.php";
+    private String KEY_IMAGE = "image";
+    private String KEY_NAME = "name";
+
+
+    public static Context contextOfApplication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        contextOfApplication = getApplicationContext();
 
         if (findViewById(R.id.fragment_container) != null) {
             getSupportFragmentManager().beginTransaction()
@@ -81,6 +105,11 @@ public class HomeActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, courseDetailFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
     }
 /*
     @Override
@@ -185,13 +214,77 @@ public class HomeActivity extends AppCompatActivity
 
 
     @Override
-    public void addCourse(String url) {
-
+    public void addCourse(String url, Bitmap bitmap) {
         AddCourseTask task = new AddCourseTask();
         task.execute(new String[]{url.toString()});
+        if (bitmap != null) {
+            uploadImage(bitmap);
+        }
 
 // Takes you back to the previous fragment by popping the current fragment out.
         getSupportFragmentManager().popBackStackImmediate();
+    }
+
+
+    private void uploadImage(Bitmap theBitmap) {
+        final Bitmap bitmap = theBitmap;
+        //Showing the progress dialog
+        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+                        loading.dismiss();
+                        //Showing toast message of the response
+                        //Toast.makeText(CourseActivity.this, s, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+
+                        //Showing toast
+                        //Toast.makeText(CourseActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                String image = getStringImage(bitmap);
+
+                //Getting Image Name
+
+
+                //Creating parameters
+                Map<String, String> params = new Hashtable<String, String>();
+
+
+                //Adding parameters
+                params.put(KEY_IMAGE, image);
+                params.put(KEY_NAME, "image");
+
+                //returning parameters
+                return params;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

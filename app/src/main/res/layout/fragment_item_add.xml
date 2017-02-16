@@ -31,6 +31,21 @@
         android:text="@string/add_course_text"
         android:onClick="addCourse"
         android:id="@+id/add_course_button"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Upload Picture"
+        android:onClick="uploadPicture"
+        android:id="@+id/upload_button"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/upload_preview" />
+
 </LinearLayout>
 
 

@@ -41,7 +41,6 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
     public void checkLogin(View arg0) {
 
         String url = buildLogInURL();
-        Log.d("WAwa",url);
         new AsyncLogin().execute(url);
     }
 
@@ -111,11 +110,9 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("wawa", result);
             try {
                 JSONObject jsonObject = new JSONObject(result);//Why isnt this string converting into json object?
                 String status = (String) jsonObject.get("result");
-                Log.d("wawa", status);
                 if (status.equals("success")) {
                     Toast.makeText(getApplicationContext(), "Login Successful"
                             , Toast.LENGTH_LONG)

@@ -193,11 +193,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("wawa", result);
             try {
                 JSONObject jsonObject = new JSONObject(result);//Why isnt this string converting into json object?
                 String status = (String) jsonObject.get("result");
-                Log.d("wawa", status);
                 if (status.equals("success")) {
                     Toast.makeText(getContext(), "Account Registration Successful"
                             , Toast.LENGTH_LONG)
