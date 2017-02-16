@@ -266,8 +266,6 @@ public class HomeActivity extends AppCompatActivity
                     public void onResponse(String s) {
                         //Disimissing the progress dialog
                         loading.dismiss();
-                        //Showing toast message of the response
-                        //Toast.makeText(CourseActivity.this, s, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -275,9 +273,6 @@ public class HomeActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-
-                        //Showing toast
-                        //Toast.makeText(CourseActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
