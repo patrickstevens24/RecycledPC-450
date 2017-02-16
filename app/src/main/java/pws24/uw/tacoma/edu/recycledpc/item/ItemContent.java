@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc.item;
 
 import org.json.JSONArray;
@@ -9,7 +15,9 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by patrickstevens on 2/12/17.
+ * Contains the contents of the item objects.
+ *
+ * @author Patrick Stevens
  */
 
 public class ItemContent implements Serializable {

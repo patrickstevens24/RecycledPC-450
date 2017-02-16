@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.app.ProgressDialog;
@@ -42,10 +48,19 @@ import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 
 //import android.support.v4.view.GravityCompat;
 
+
+/**
+ * The activity that holds a list of all the items currently on the database.
+ *
+ *
+ * @author Patrick Stevens
+ * @author Arthur Panlilio
+ */
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ItemAddFragment.ItemAddListener{
 
     private String UPLOAD_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/upload3.php";
+    //Variables for the map to upload the image.
     private String KEY_IMAGE = "image";
     private String KEY_NAME = "name";
 
@@ -107,7 +122,11 @@ public class HomeActivity extends AppCompatActivity
                 .commit();
     }
 
-
+    /**
+     * Gets the context of an application
+     *
+     * @return the context of an application
+     */
     public static Context getContextOfApplication(){
         return contextOfApplication;
     }
@@ -144,6 +163,11 @@ public class HomeActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * This connects online to access the php file and add the item to the database.
+     *
+     */
     private class AddCourseTask extends AsyncTask<String, Void, String> {
 
 
@@ -226,6 +250,12 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
+    /**
+     * Uploads the image by using a php file.
+     *
+     *
+     * @param theBitmap to be uploaded into our online folder.
+     */
     private void uploadImage(Bitmap theBitmap) {
         final Bitmap bitmap = theBitmap;
         //Showing the progress dialog
@@ -255,7 +285,7 @@ public class HomeActivity extends AppCompatActivity
                 //Converting Bitmap to String
                 String image = getStringImage(bitmap);
 
-                //Getting Image Name
+
 
 
                 //Creating parameters
@@ -264,6 +294,7 @@ public class HomeActivity extends AppCompatActivity
 
                 //Adding parameters
                 params.put(KEY_IMAGE, image);
+                //Image name does not matter. In the php file the name will be the item's id number.
                 params.put(KEY_NAME, "image");
 
                 //returning parameters
@@ -278,7 +309,12 @@ public class HomeActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-
+    /**
+     * Converts the bitmap into a string.
+     *
+     * @param bmp is the bitmap to be converted
+     * @return a string
+     */
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);

@@ -1,3 +1,9 @@
+/*
+ * Recycled PC
+ * Team 10
+ * TCSS 405b- Spring 2017
+ */
+
 package pws24.uw.tacoma.edu.recycledpc;
 
 import android.graphics.Bitmap;
@@ -23,7 +29,8 @@ import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link } and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ *
+ * @author Patrick Stevens
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
@@ -65,6 +72,11 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         });
     }
 
+    /**
+     * Downloads images for the list view.
+     * Not fully implimented yet.
+     *
+     */
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
