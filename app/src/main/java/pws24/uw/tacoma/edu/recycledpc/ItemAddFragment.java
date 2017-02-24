@@ -155,6 +155,7 @@ public class ItemAddFragment extends Fragment {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showFileChooser();
             }
         });
