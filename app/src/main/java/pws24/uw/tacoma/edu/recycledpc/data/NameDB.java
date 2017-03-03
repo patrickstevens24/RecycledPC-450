@@ -32,8 +32,9 @@ public class NameDB {
         mSQLiteDatabase = mCourseDBHelper.getWritableDatabase();
     }
 
-    public boolean insertName(String firstName, String lastName) {
+    public boolean insertName(String email, String firstName, String lastName) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put("email", email);
         contentValues.put("firstName", firstName);
         contentValues.put("lastName", lastName);
 
@@ -47,11 +48,24 @@ public class NameDB {
     }
 
     public String getFName() {
-        ContentValues contentValues = new ContentValues();
-        String selectQuery = "SELECT * FROM Name";
-        Cursor c = mSQLiteDatabase.rawQuery(selectQuery,null);
+        Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
+        c.moveToFirst();
 
-        return c.toString();
+        return c.getString(1);
+    }
+
+    public String getLName() {
+        Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
+        c.moveToFirst();
+
+        return c.getString(2);
+    }
+
+    public String getEmail() {
+        Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
+        c.moveToFirst();
+
+        return c.getString(0);
     }
 
     class CourseDBHelper extends SQLiteOpenHelper {
@@ -70,7 +84,6 @@ public class NameDB {
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            Log.d("VOT", "CREATED");
             sqLiteDatabase.execSQL(CREATE_NAME_SQL);
         }
 
