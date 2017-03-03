@@ -81,6 +81,7 @@ public class HomeActivity extends AppCompatActivity
     private NameDB mNameDB;
 
     private TextView mMyName;
+    private TextView mMyEmail;
 
     public static Context contextOfApplication;
 
@@ -139,9 +140,12 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
         mMyName = (TextView) header.findViewById(R.id.name);
+        mMyEmail = (TextView) header.findViewById(R.id.myEmailView);
         mNameDB = new NameDB(this);
         mFirstName = mNameDB.getFName();
-        mMyName.setText(mFirstName);
+        mLastName = mNameDB.getLName();
+        mMyName.setText(mFirstName + " " + mLastName);
+        mMyEmail.setText(mNameDB.getEmail());
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

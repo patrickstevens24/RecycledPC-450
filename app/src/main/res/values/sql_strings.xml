@@ -2,7 +2,7 @@
 <resources>
     <string name="CREATE_NAME_SQL">
     CREATE TABLE IF NOT EXISTS Name
-    (firstName TEXT PRIMARY KEY, lastName TEXT)
+    (email TEXT PRIMARY KEY, firstName TEXT, lastName TEXT)
 </string>
 
 <string name="DROP_NAME_SQL">
