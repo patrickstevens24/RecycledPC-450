@@ -12,12 +12,14 @@
     <string name="password_hint">Password</string>
     <string name="sign_in">SIGN IN</string>
     <string name="register">REGISTER</string>
+    <string name="LOGIN_PREFS">edu.tacoma.uw.recycledpc.PREFS</string>
+    <string name="LOGGEDIN">loggedin</string>
 
     <!--Register strings-->
     <string name="register_email_hint">Register Email</string>
-    <string name="confirm_email_hint">Confirm Email</string>
+    <string name="first_name_hint">First name</string>
     <string name="register_password_hint">Register Password</string>
-    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="last_name_hint">Last name</string>
     <string name="register_account">REGISTER ACCOUNT</string>
 
 

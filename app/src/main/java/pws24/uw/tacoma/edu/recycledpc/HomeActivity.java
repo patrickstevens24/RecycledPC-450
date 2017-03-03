@@ -9,6 +9,8 @@ package pws24.uw.tacoma.edu.recycledpc;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -26,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -48,6 +51,7 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Map;
 
+import pws24.uw.tacoma.edu.recycledpc.data.NameDB;
 import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 
 //import android.support.v4.view.GravityCompat;
@@ -71,6 +75,12 @@ public class HomeActivity extends AppCompatActivity
     private String KEY_IMAGE = "image";
     private String KEY_NAME = "name";
 
+    private String mFirstName;
+    private String mLastName;
+
+    private NameDB mNameDB;
+
+    private TextView mMyName;
 
     public static Context contextOfApplication;
 
@@ -127,6 +137,11 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        mMyName = (TextView) header.findViewById(R.id.name);
+        mNameDB = new NameDB(this);
+        mFirstName = mNameDB.getFName();
+        mMyName.setText(mFirstName);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -399,10 +414,25 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.logout) {
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private boolean logout(){
+        SharedPreferences sharedPreferences =
+                getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
+                .commit();
+
+        Intent i = new Intent(this, LogInActivity.class);
+        startActivity(i);
+        finish();
+        return true;
+
     }
 }
