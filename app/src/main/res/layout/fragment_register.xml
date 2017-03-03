@@ -51,25 +51,6 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                android:id="@+id/conEmail"
-                android:hint="@string/confirm_email_hint"
-                android:maxLines="1"
-                android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:layout_marginTop="10dp" />
-
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/regPassword"
@@ -88,10 +69,26 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/conPassword"
-                android:hint="@string/confirm_password_hint"
+                android:id="@+id/firstName"
+                android:hint="@string/first_name_hint"
+                android:maxLines="1"
+                android:textCursorDrawable="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:layout_marginTop="10dp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/lastName"
+                android:hint="@string/last_name_hint"
                 android:maxLines="1"
                 android:textCursorDrawable="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimaryDark"

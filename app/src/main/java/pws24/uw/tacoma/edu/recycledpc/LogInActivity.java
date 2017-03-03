@@ -6,7 +6,9 @@
 
 package pws24.uw.tacoma.edu.recycledpc;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import pws24.uw.tacoma.edu.recycledpc.data.NameDB;
+import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
 
 /**
  *The login activity is the login screen.
@@ -36,16 +43,27 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
     // LOGIN_URL connects to the php file.
-    public static final String LOGIN_URL = "http://cssgate.insttech.washington.edu/~apanlili/login.php?";
+    public static final String LOGIN_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/login.php?";
+    private static final String STORE_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/storeName.php?cmd=names";
     private EditText etEmail;
     private EditText etPassword;
+    private NameDB mNameDB;
+
+    private SharedPreferences mSharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
+        mNameDB = new NameDB(this);
+        mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS)
+                , Context.MODE_PRIVATE);
+        if (mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
+            Intent i = new Intent(this, HomeActivity.class);
+            startActivity(i);
+            finish();
+        }
         etEmail = (EditText) findViewById(R.id.email);
         etPassword = (EditText) findViewById(R.id.password);
 
@@ -103,7 +121,7 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
         } catch(Exception e) {
 
         }
-
+        Log.d("OOO", sb.toString());
         return sb.toString();
     }
 
@@ -150,13 +168,26 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
             try {
                 JSONObject jsonObject = new JSONObject(result);//Why isnt this string converting into json object?
                 String status = (String) jsonObject.get("result");
+                Log.d("OOOA", status);
                 if (status.equals("success")) {
+
                     Toast.makeText(getApplicationContext(), "Login Successful"
                             , Toast.LENGTH_LONG)
                             .show();
-                    Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    LogInActivity.this.finish();
+                    mSharedPreferences
+                            .edit()
+                            .putBoolean(getString(R.string.LOGGEDIN), true)
+                            .apply();
+                    StringBuilder sb = new StringBuilder(STORE_URL);
+                    sb.append("&email=");
+                    String email = etEmail.getText().toString();
+                    try {
+                        sb.append(URLEncoder.encode(email, "UTF-8"));
+                    } catch(Exception e) {
+
+                    }
+                    new StoreName().execute(new String[]{sb.toString()});
+
                 } else {
                     Toast.makeText(getApplicationContext(), ""
                                     + jsonObject.get("error")
@@ -167,6 +198,62 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
                 Toast.makeText(getApplicationContext(), "Something wrong with the data" +
                         e.getMessage(), Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private class StoreName extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to download the list of courses, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            if (result.startsWith("Unable to")) {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+
+
+            String fName, lName;
+            try {
+                JSONObject obj = new JSONObject(result);
+                Log.d("NO",obj.getString("firstName"));
+                mNameDB.insertName(obj.getString("firstName"), obj.getString("lastName"));
+                Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
+                startActivity(intent);
+                LogInActivity.this.finish();
+            } catch (JSONException e){
+
+            }
+
         }
     }
 

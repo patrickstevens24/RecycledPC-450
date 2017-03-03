@@ -6,6 +6,8 @@
 
 package pws24.uw.tacoma.edu.recycledpc.item;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +54,7 @@ public class ItemContent implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
+                    Log.d("WOW", obj.getString(ItemContent.TITLE));
                     ItemContent course = new ItemContent(obj.getString(ItemContent.TITLE), obj.getString(ItemContent.SHORT_DESC)
                             , obj.getString(ItemContent.LONG_DESC), obj.getString(ItemContent.IMAGE_PATH));
                     courseList.add(course);

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +46,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public static final String REGISTER_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/register.php?";
     //These variables are to be compared to see if the information matches
     private EditText etEmail;
-    private EditText etEmailConfirm;
     private EditText etPassword;
-    private EditText etPasswordConfirm;
+    private EditText etFirstName;
+    private EditText etLastName;
 
 
 
@@ -82,11 +83,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_register, container, false);
         etEmail = (EditText)v.findViewById(R.id.regEmail);
-        etEmailConfirm = (EditText)v.findViewById(R.id.conEmail);
         etPassword = (EditText)v.findViewById(R.id.regPassword);
-        etPasswordConfirm = (EditText)v.findViewById(R.id.conPassword);
+        etFirstName = (EditText)v.findViewById(R.id.firstName);
+        etLastName = (EditText)v.findViewById(R.id.lastName);
         Button b = (Button) v.findViewById(R.id.register_account);
         b.setOnClickListener(this);
         return v;
@@ -130,16 +132,22 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * @param arg0
      */
     public void onClick(View arg0) {
+        if (etPassword.getText().toString().trim().length() <= 0) {
+            Toast.makeText(getContext(), "You did not enter a password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (etFirstName.getText().toString().trim().length() <= 0) {
+            Toast.makeText(getContext(), "You did not enter a first name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (etLastName.getText().toString().trim().length() <= 0) {
+            Toast.makeText(getContext(), "You did not enter a last name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String url = buildRegisterURL(arg0);
 
-        if (!(etEmail.getText().toString().equals(etEmailConfirm.getText().toString()))) {
-            Toast.makeText(getActivity(),"Emails do not match",Toast.LENGTH_SHORT).show();
-        }
-        else if(!(etPassword.getText().toString().equals(etPasswordConfirm.getText().toString()))) {
-            Toast.makeText(getActivity(),"Passwords do not match",Toast.LENGTH_SHORT).show();
-        } else {
-            String url = buildRegisterURL(arg0);
-            new RegisterFragment.AsyncRegister().execute(url);
-        }
+        new RegisterFragment.AsyncRegister().execute(url);
+
     }
 
     /**
@@ -158,11 +166,20 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             String password = etPassword.getText().toString();
             sb.append("&password=");
             sb.append(URLEncoder.encode(password, "UTF-8"));
+
+            String firstName = etFirstName.getText().toString();
+            sb.append("&firstName=");
+            sb.append(URLEncoder.encode(firstName, "UTF-8"));
+
+            String lastName = etLastName.getText().toString();
+            sb.append("&lastName=");
+            sb.append(URLEncoder.encode(lastName, "UTF-8"));
+
         } catch(Exception e) {
             Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
-
+        Log.d("OOO", sb.toString());
         return sb.toString();
     }
 
