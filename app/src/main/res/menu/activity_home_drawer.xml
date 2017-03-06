@@ -8,8 +8,8 @@
             android:title="New Item" />
         <item
             android:id="@+id/my_offers"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="My Offers" />
+            android:icon="@drawable/ic_search"
+            android:title="Search" />
         <item
             android:id="@+id/my_items"
             android:icon="@drawable/ic_menu_slideshow"
@@ -20,7 +20,7 @@
             android:title="Wishlist" />
         <item
             android:id="@+id/logout"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/ic_wish"
             android:title="Logout" />
     </group>
 

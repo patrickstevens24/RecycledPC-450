@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,8 +47,10 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -65,15 +68,17 @@ import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
  * @author Arthur Panlilio
  */
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ItemAddFragment.ItemAddListener{
+        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ItemAddFragment.ItemAddListener, SearchFragment.OnListFragmentInteractionListener{
 
     public static final int  MY_PERMISSIONS_REQUEST_READ_STORAGE = 1;
+    private static final String LOG = "TEST";
 
     private String UPLOAD_URL = "http://cssgate.insttech.washington.edu/~_450bteam10/upload3.php";
 
     //Variables for the map to upload the image.
     private String KEY_IMAGE = "image";
     private String KEY_NAME = "name";
+    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     private String mFirstName;
     private String mLastName;
@@ -238,6 +243,12 @@ public class HomeActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        SearchDialogFragment courseAddFragment = new SearchDialogFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, courseAddFragment)
+                .addToBackStack(null)
+                .commit();
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -331,6 +342,33 @@ public class HomeActivity extends AppCompatActivity
         getSupportFragmentManager().popBackStackImmediate();
     }
 
+    public void searchCourse(View view) {
+
+        String search = "http://cssgate.insttech.washington.edu/~_450bteam10/PClist2.php?cmd=search&title=";
+        StringBuilder sb = new StringBuilder(search);
+
+        EditText editText = (EditText) findViewById(R.id.search_id);
+        String message = editText.getText().toString();
+        message.replace(' ', ',');
+        try {
+            sb.append(URLEncoder.encode(message, "UTF-8"));
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //sb.append(message);
+        Log.d(LOG, sb.toString());
+
+        SearchFragment courseAddFragment = new SearchFragment(sb.toString());
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, courseAddFragment)
+                .addToBackStack(null)
+                .commit();
+
+
+    }
+
 
     /**
      * Uploads the image by using a php file.
@@ -413,6 +451,11 @@ public class HomeActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.my_offers) {
+            SearchDialogFragment courseAddFragment = new SearchDialogFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, courseAddFragment)
+                    .addToBackStack(null)
+                    .commit();
 
         } else if (id == R.id.my_items) {
 
