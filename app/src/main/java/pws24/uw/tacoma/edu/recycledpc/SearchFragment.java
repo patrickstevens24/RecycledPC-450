@@ -58,8 +58,8 @@ public class SearchFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public SearchFragment(String pls) {
-        url = pls;
+    public SearchFragment(String theUrl) {
+        url = theUrl;
     }
 
 
