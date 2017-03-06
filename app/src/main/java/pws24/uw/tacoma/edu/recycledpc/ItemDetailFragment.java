@@ -96,7 +96,7 @@ public class ItemDetailFragment extends Fragment {
         if (item != null) {
             mCourseIdTextView.setText(item.getId());
             mCourseShortDescTextView.setText(item.getShortDesc());
-            mCourseLongDescTextView.setText(item.getLongDesc());
+            mCourseLongDescTextView.setText(item.getLongDesc() + item.getSellerID());
             String imagePath = item.getPath();
             new DownloadImageTask(mItemImageView).execute(imagePath);
         }

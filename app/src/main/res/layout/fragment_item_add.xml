@@ -9,18 +9,21 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="@string/course_id_hint"
         android:id="@+id/add_course_id" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="@string/course_short_desc_hint"
         android:id="@+id/add_course_short_desc" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="@string/course_long_desc_hint"
         android:id="@+id/add_course_long_desc" />
 

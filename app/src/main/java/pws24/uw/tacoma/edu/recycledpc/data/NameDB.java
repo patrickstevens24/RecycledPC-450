@@ -32,8 +32,9 @@ public class NameDB {
         mSQLiteDatabase = mCourseDBHelper.getWritableDatabase();
     }
 
-    public boolean insertName(String email, String firstName, String lastName) {
+    public boolean insertName(int id, String email, String firstName, String lastName) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put("id", id);
         contentValues.put("email", email);
         contentValues.put("firstName", firstName);
         contentValues.put("lastName", lastName);
@@ -47,25 +48,32 @@ public class NameDB {
         mSQLiteDatabase.close();
     }
 
-    public String getFName() {
+    public int getID(){
         Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
         c.moveToFirst();
 
-        return c.getString(1);
+        return c.getInt(0);
     }
 
-    public String getLName() {
+    public String getFName() {
         Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
         c.moveToFirst();
 
         return c.getString(2);
     }
 
+    public String getLName() {
+        Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
+        c.moveToFirst();
+
+        return c.getString(3);
+    }
+
     public String getEmail() {
         Cursor c = mSQLiteDatabase.query("name", null, null, null, null, null, null);
         c.moveToFirst();
 
-        return c.getString(0);
+        return c.getString(1);
     }
 
     class CourseDBHelper extends SQLiteOpenHelper {

@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 
+import pws24.uw.tacoma.edu.recycledpc.data.NameDB;
+
 import static android.app.Activity.RESULT_OK;
 import static pws24.uw.tacoma.edu.recycledpc.R.id.imageView;
 
@@ -56,6 +58,9 @@ public class ItemAddFragment extends Fragment {
     private ImageView imageView;
 
     private ItemAddListener mListener;
+
+    private NameDB mNameDB;
+
 
     private final static String COURSE_ADD_URL
             = "http://cssgate.insttech.washington.edu/~_450bteam10/addItem2.php?";
@@ -115,6 +120,10 @@ public class ItemAddFragment extends Fragment {
             sb.append("&longDesc=");
             sb.append(URLEncoder.encode(courseLongDesc, "UTF-8"));
 
+            String sellerID = mNameDB.getID() + "";
+            sb.append("&sellerID=");
+            sb.append(URLEncoder.encode(sellerID, "UTF-8"));
+
 
         }
         catch(Exception e) {
@@ -132,7 +141,7 @@ public class ItemAddFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_item_add, container, false);
-
+        mNameDB = new NameDB(getContext());
         mCourseIdEditText = (EditText) v.findViewById(R.id.add_course_id);
         mCourseShortDescEditText = (EditText) v.findViewById(R.id.add_course_short_desc);
         mCourseLongDescEditText = (EditText) v.findViewById(R.id.add_course_long_desc);
