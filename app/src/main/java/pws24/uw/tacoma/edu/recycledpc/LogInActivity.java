@@ -246,7 +246,7 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
             try {
                 JSONObject obj = new JSONObject(result);
                 mNameDB.deleteCourses();
-                mNameDB.insertName(obj.getString("email"), obj.getString("firstName"), obj.getString("lastName"));
+                mNameDB.insertName(obj.getInt("id"),obj.getString("email"), obj.getString("firstName"), obj.getString("lastName"));
                 Intent intent = new Intent(LogInActivity.this, HomeActivity.class);
                 startActivity(intent);
                 LogInActivity.this.finish();

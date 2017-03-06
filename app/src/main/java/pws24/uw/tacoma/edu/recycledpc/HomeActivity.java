@@ -83,6 +83,8 @@ public class HomeActivity extends AppCompatActivity
     private TextView mMyName;
     private TextView mMyEmail;
 
+    private FloatingActionButton fab;
+
     public static Context contextOfApplication;
 
     @Override
@@ -148,7 +150,7 @@ public class HomeActivity extends AppCompatActivity
         mMyEmail.setText(mNameDB.getEmail());
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,11 +195,13 @@ public class HomeActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putSerializable(ItemDetailFragment.COURSE_ITEM_SELECTED, item);
         courseDetailFragment.setArguments(args);
-
+        fab.hide();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, courseDetailFragment)
                 .addToBackStack(null)
                 .commit();
+
+
     }
 
     /**

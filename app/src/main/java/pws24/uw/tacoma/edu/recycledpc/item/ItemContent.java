@@ -27,16 +27,21 @@ public class ItemContent implements Serializable {
     private String mcourseId;
     private String mshortDescription;
     private String mlongDescription;
+
+
+
+    private int msellerID;
     private String mPath;
 
 
     public static final String TITLE = "title", SHORT_DESC = "price"
-            , LONG_DESC = "longDesc", IMAGE_PATH = "imagePath";
+            , LONG_DESC = "longDesc", IMAGE_PATH = "imagePath", SELLER_ID = "sellerID";
 
-    public ItemContent(String id, String sd, String ld, String path) {
+    public ItemContent(String id, String sd, String ld, int sellerID, String path) {
         mlongDescription = ld;
         mshortDescription = sd;
         mcourseId = id;
+        msellerID = sellerID;
         mPath = path;
     }
 
@@ -54,9 +59,8 @@ public class ItemContent implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    Log.d("WOW", obj.getString(ItemContent.TITLE));
                     ItemContent course = new ItemContent(obj.getString(ItemContent.TITLE), obj.getString(ItemContent.SHORT_DESC)
-                            , obj.getString(ItemContent.LONG_DESC), obj.getString(ItemContent.IMAGE_PATH));
+                            , obj.getString(ItemContent.LONG_DESC), obj.getInt(ItemContent.SELLER_ID), obj.getString(ItemContent.IMAGE_PATH));
                     courseList.add(course);
                 }
             } catch (JSONException e) {
@@ -86,6 +90,14 @@ public class ItemContent implements Serializable {
 
     public String getLongDesc() {
         return mlongDescription;
+    }
+
+    public int getSellerID() {
+        return msellerID;
+    }
+
+    public void setSellerID(int msellerID) {
+        this.msellerID = msellerID;
     }
 
     public String getPath() {
