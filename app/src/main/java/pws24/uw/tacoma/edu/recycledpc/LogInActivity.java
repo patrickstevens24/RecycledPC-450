@@ -242,8 +242,9 @@ public class LogInActivity extends AppCompatActivity implements RegisterFragment
 
 
 
-            String fName, lName;
+
             try {
+                Log.d("WOW", result.toString());
                 JSONObject obj = new JSONObject(result);
                 mNameDB.deleteCourses();
                 mNameDB.insertName(obj.getInt("id"),obj.getString("email"), obj.getString("firstName"), obj.getString("lastName"));
