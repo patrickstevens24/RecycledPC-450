@@ -18,8 +18,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -469,9 +467,14 @@ public class HomeActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
             fab.hide();
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.home) {
+            ItemFragment itemFragment2 = new ItemFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, itemFragment2)
+                    .addToBackStack(null)
+                    .commit();
 
-        } else if (id == R.id.nav_send) {
+
 
         } else if (id == R.id.logout) {
             logout();
