@@ -32,6 +32,8 @@
     <string name="course_prereqs_hint">Enter ????</string>
     <string name="add_course_text">Add Item</string>
     <string name="contact_owner">Contact Seller</string>
+    <string name="add_wish_item">Add Item</string>
+    <string name="add_wish_item_hint">Add Item...</string>
 
 
 </resources>

@@ -101,10 +101,10 @@ public class ItemDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("message/rfc822");
+                i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{mContact});
-                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                i.putExtra(Intent.EXTRA_SUBJECT, "I wish to buy your item");
+                i.putExtra(Intent.EXTRA_TEXT   , "");
                 try {
                     startActivity(Intent.createChooser(i, "Send mail..."));
                 } catch (android.content.ActivityNotFoundException ex) {
