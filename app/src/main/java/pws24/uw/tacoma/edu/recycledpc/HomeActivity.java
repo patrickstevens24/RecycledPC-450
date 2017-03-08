@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -68,7 +70,8 @@ import pws24.uw.tacoma.edu.recycledpc.item.ItemContent;
  * @author Arthur Panlilio
  */
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ItemAddFragment.ItemAddListener, SearchFragment.OnListFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ItemAddFragment.ItemAddListener,
+        SearchFragment.OnListFragmentInteractionListener{
 
     public static final int  MY_PERMISSIONS_REQUEST_READ_STORAGE = 1;
     private static final String LOG = "TEST";
@@ -460,7 +463,12 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.my_items) {
 
         } else if (id == R.id.nav_manage) {
-
+            WishItemFragment wishAddFragment = new WishItemFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, wishAddFragment)
+                    .addToBackStack(null)
+                    .commit();
+            fab.hide();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
