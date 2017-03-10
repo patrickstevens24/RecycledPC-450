@@ -33,6 +33,7 @@ public class WishItemContent implements Serializable {
     public static final String NAME = "name" , User_ID = "userID";
 
     public WishItemContent(String name) {
+
         mName = name;
     }
 

@@ -155,8 +155,19 @@ public class ItemAddFragment extends Fragment {
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = buildCourseURL(v);
-                mListener.addCourse(url, bitmap);
+                if (mCourseIdEditText.getText().toString().length() < 3) {
+                    Toast.makeText(v.getContext(), "Item name too short", Toast.LENGTH_LONG)
+                            .show();
+                } else if (!(checkPrice(mCourseShortDescEditText.getText().toString()))){
+                    Toast.makeText(v.getContext(), "Price not valid", Toast.LENGTH_LONG)
+                            .show();
+                } else if (mCourseLongDescEditText.getText().toString().length() < 6) {
+                    Toast.makeText(v.getContext(), "Description too short", Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    String url = buildCourseURL(v);
+                    mListener.addCourse(url, bitmap);
+                }
             }
         });
 
@@ -170,6 +181,16 @@ public class ItemAddFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private boolean checkPrice(String s) {
+        for(int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if(Character.isDigit(c)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
